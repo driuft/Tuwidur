@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 class HomeTableTableViewController: UITableViewController {
 
@@ -16,16 +17,21 @@ class HomeTableTableViewController: UITableViewController {
     
     var tweetArray = [NSDictionary]()
     var numberOfTweets = 20
+    var animationView: AnimationView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Start loading animation
+        startAnimation()
         // Load list of tweets from signed-in user
         loadTweets()
         // Set up pull-to-refresh action
         _refreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         // Let the TableView know which refreshControl is ours
         tableView.refreshControl = _refreshControl
+        // Stop loading animation
+        stopAnimation()
     }
     
     @objc func loadTweets() {
@@ -66,6 +72,19 @@ class HomeTableTableViewController: UITableViewController {
         }, failure: { Error in
             print("Error: " + Error.localizedDescription)
         })
+    }
+    
+    func startAnimation() {
+        animationView = .init(name: "96209-timer")
+        animationView!.frame = view.bounds
+        animationView!.contentMode = .scaleAspectFit
+        view.addSubview(animationView!)
+        animationView!.loopMode = .loop
+        animationView!.play()
+    }
+    
+    func stopAnimation() {
+        animationView?.stop()
     }
 
     @IBAction func onLogout(_ sender: Any) {
