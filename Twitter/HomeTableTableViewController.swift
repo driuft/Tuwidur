@@ -9,6 +9,7 @@
 import UIKit
 import Lottie
 
+@available(iOS 13.0, *)
 class HomeTableTableViewController: UITableViewController {
 
     let _refreshControl = UIRefreshControl()
@@ -24,14 +25,18 @@ class HomeTableTableViewController: UITableViewController {
         
         // Start loading animation
         startAnimation()
-        // Load list of tweets from signed-in user
-        loadTweets()
         // Set up pull-to-refresh action
         _refreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         // Let the TableView know which refreshControl is ours
         tableView.refreshControl = _refreshControl
         // Stop loading animation
         stopAnimation()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Load list of tweets from signed-in user
+        loadTweets()
     }
     
     @objc func loadTweets() {
