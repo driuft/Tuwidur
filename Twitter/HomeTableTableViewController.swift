@@ -12,10 +12,12 @@ import Lottie
 @available(iOS 13.0, *)
 class HomeTableTableViewController: UITableViewController {
 
+    // Swipe-to-refresh
     let _refreshControl = UIRefreshControl()
+    // Network request setup
     let baseUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
     var requestParams = ["count": 20]
-    
+    // Tweet cell setup
     var tweetArray = [NSDictionary]()
     var numberOfTweets = 20
     var animationView: AnimationView?
@@ -24,21 +26,21 @@ class HomeTableTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Start loading animation
-        startAnimation()
+        //startAnimation()
         // Set up pull-to-refresh action
         _refreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         // Let the TableView know which refreshControl is ours
         tableView.refreshControl = _refreshControl
         // Stop loading animation
-        stopAnimation()
+        //stopAnimation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Load list of tweets from signed-in user
         loadTweets()
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 200
+//        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 200
     }
     
     @objc func loadTweets() {

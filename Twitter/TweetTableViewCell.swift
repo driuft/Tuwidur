@@ -17,6 +17,7 @@ class TweetTableViewCell: UITableViewCell {
     @IBOutlet weak var retweetButton: UIButton!
     
     var favorited: Bool = false
+    var retweeted: Bool = false
     var tweetId: Int = -1
     
     @IBAction func favoriteTweet(_ sender: Any) {
@@ -37,11 +38,20 @@ class TweetTableViewCell: UITableViewCell {
     }
     
     @IBAction func retweet(_ sender: Any) {
-        TwitterAPICaller.client?.retweet(tweetId: tweetId, success: {
-                self.setRetweeted(true)
-            }, failure: { (Error) in
-                print("Error is retweeting: \(Error)")
-            })
+        let toBeRetweeted = !retweeted
+        if toBeRetweeted {
+            TwitterAPICaller.client?.retweet(tweetId: tweetId, success: {
+                    self.setRetweeted(true)
+                }, failure: { (Error) in
+                    print("Retweeting did not succeed: \(Error)")
+                })
+        } else {
+            TwitterAPICaller.client?.unretweet(tweetId: tweetId, success: {
+                    self.setRetweeted(false)
+                }, failure: { (Error) in
+                    print("Undo retweeting did not succeed: \(Error)")
+                })
+        }
     }
     
     func setFavorite(_ isFavorited:Bool) {
@@ -57,10 +67,8 @@ class TweetTableViewCell: UITableViewCell {
     func setRetweeted(_ isRetweeted:Bool) {
         if isRetweeted {
             retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControl.State.normal)
-            retweetButton.isEnabled = false
         } else {
             retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControl.State.normal)
-            retweetButton.isEnabled = true
         }
     }
     
