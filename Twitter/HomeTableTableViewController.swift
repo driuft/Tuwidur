@@ -26,13 +26,11 @@ class HomeTableTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Start loading animation
-        //startAnimation()
+        // startAnimation()
         // Set up pull-to-refresh action
         _refreshControl.addTarget(self, action: #selector(loadTweets), for: .valueChanged)
         // Let the TableView know which refreshControl is ours
         tableView.refreshControl = _refreshControl
-        // Stop loading animation
-        //stopAnimation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,6 +53,8 @@ class HomeTableTableViewController: UITableViewController {
             for tweet in tweets {
                 self.tweetArray.append(tweet)
             }
+            // Stop loading animation
+            // self.stopAnimation()
             // Reload data with our fetched API content
             self.tableView.reloadData()
             // Stop refresh icon after reloading data
